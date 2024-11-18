@@ -15,8 +15,12 @@ namespace Negocio.Clases
         public RespuestaGeneral<object> IniciarSesion(PeticionGeneral<ParametrosIniciarSesion> peticionGeneral);
         public RespuestaGeneral<object> RecuperarContraseña(PeticionGeneral<ParametrosRecuperarContraseña> peticionGeneral);
         public RespuestaGeneral<object> MisCotizaciones();
+        public RespuestaGeneral<object> ConsultarPoliza();
+        public RespuestaGeneral<object> CotizarPoliza();
+        public RespuestaGeneral<object> TomarPoliza();
         public RespuestaGeneral<object> MisPolizas();
         public RespuestaGeneral<object> MisCoberturas();
+        public RespuestaGeneral<object> AplicarCobertura();
 
     }
 }

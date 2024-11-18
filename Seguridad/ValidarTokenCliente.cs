@@ -1,7 +1,10 @@
 ﻿using Contratos.Contratos;
+using Datos.Entidades;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Text.Json;
@@ -34,10 +37,11 @@ namespace Seguridad
                 tokenData.esValido = false;                
                 if (token != string.Empty)
                 {
-                    if (!true)
-                    {
-                        claims.Add(new Claim(ClaimTypes.Name, "Usuario"));
-                        claims.Add(new Claim(ClaimTypes.Role, "Cliente"));   
+                    IConfiguration configuration = Context.RequestServices.GetService(typeof(IConfiguration)) as IConfiguration;
+                    AutenticacionJWT autenticacionJWT = new AutenticacionJWT(configuration);
+                    if (autenticacionJWT.ValidarToken(token))
+                    {                        
+                        claims.AddRange(autenticacionJWT.ObtenerClaims(token));   
                     }
                     else
                     {                        
@@ -61,6 +65,6 @@ namespace Seguridad
                 return AuthenticateResult.Fail(ex.Message);
             }
 
-        }
+        }        
     }
 }

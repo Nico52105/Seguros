@@ -62,6 +62,24 @@ namespace ApiColmenaSeguros.Controllers
         }
 
         [HttpGet("/[Action]")]
+        [ProducesResponseType(typeof(RespuestaGeneral<object>), 200)]
+        [ProducesResponseType(typeof(RespuestaGeneral<object>), 401)]
+        [ProducesResponseType(typeof(RespuestaGeneral<object>), 500)]
+        public ActionResult<RespuestaGeneral<object>> ConsultarPoliza(PeticionGeneral<ParametrosRecuperarContraseña> peticionGeneral)
+        {
+            return iRespuestas.Formato(this.iCliente.ConsultarPoliza());
+        }
+
+        [HttpGet("/[Action]")]
+        [ProducesResponseType(typeof(RespuestaGeneral<object>), 200)]
+        [ProducesResponseType(typeof(RespuestaGeneral<object>), 401)]
+        [ProducesResponseType(typeof(RespuestaGeneral<object>), 500)]
+        public ActionResult<RespuestaGeneral<object>> CotizarPoliza(PeticionGeneral<ParametrosRecuperarContraseña> peticionGeneral)
+        {
+            return iRespuestas.Formato(this.iCliente.CotizarPoliza());
+        }
+
+        [HttpPost("/[Action]")]
         [Authorize]
         [ProducesResponseType(typeof(RespuestaGeneral<object>), 200)]
         [ProducesResponseType(typeof(RespuestaGeneral<object>), 401)]
@@ -72,7 +90,18 @@ namespace ApiColmenaSeguros.Controllers
             return iRespuestas.Formato(tokenData.esValido ? this.iCliente.MisCotizaciones() : tokenData.ErrorToken());
         }
 
-        [HttpGet("/[Action]")]
+        [HttpPost("/[Action]")]
+        [Authorize]
+        [ProducesResponseType(typeof(RespuestaGeneral<object>), 200)]
+        [ProducesResponseType(typeof(RespuestaGeneral<object>), 401)]
+        [ProducesResponseType(typeof(RespuestaGeneral<object>), 500)]
+        public ActionResult<RespuestaGeneral<object>> TomarPoliza(PeticionGeneral<string> peticionGeneral)
+        {
+            TokenData tokenData = JsonSerializer.Deserialize<TokenData>(peticionGeneral.Authorization);
+            return iRespuestas.Formato(tokenData.esValido ? this.iCliente.TomarPoliza() : tokenData.ErrorToken());
+        }
+
+        [HttpPost("/[Action]")]
         [Authorize]
         [ProducesResponseType(typeof(RespuestaGeneral<object>), 200)]
         [ProducesResponseType(typeof(RespuestaGeneral<object>), 401)]
@@ -83,7 +112,7 @@ namespace ApiColmenaSeguros.Controllers
             return iRespuestas.Formato(tokenData.esValido ? this.iCliente.MisPolizas() : tokenData.ErrorToken());
         }
 
-        [HttpGet("/[Action]")]
+        [HttpPost("/[Action]")]
         [Authorize]
         [ProducesResponseType(typeof(RespuestaGeneral<object>), 200)]
         [ProducesResponseType(typeof(RespuestaGeneral<object>), 401)]
@@ -92,6 +121,17 @@ namespace ApiColmenaSeguros.Controllers
         {
             TokenData tokenData = JsonSerializer.Deserialize<TokenData>(peticionGeneral.Authorization);
             return iRespuestas.Formato(tokenData.esValido ? this.iCliente.MisCoberturas() : tokenData.ErrorToken());
+        }
+
+        [HttpPost("/[Action]")]
+        [Authorize]
+        [ProducesResponseType(typeof(RespuestaGeneral<object>), 200)]
+        [ProducesResponseType(typeof(RespuestaGeneral<object>), 401)]
+        [ProducesResponseType(typeof(RespuestaGeneral<object>), 500)]
+        public ActionResult<RespuestaGeneral<object>> AplicarCobertura(PeticionGeneral<string> peticionGeneral)
+        {
+            TokenData tokenData = JsonSerializer.Deserialize<TokenData>(peticionGeneral.Authorization);
+            return iRespuestas.Formato(tokenData.esValido ? this.iCliente.AplicarCobertura() : tokenData.ErrorToken());
         }
     }
 }

@@ -2,22 +2,27 @@
 using Contratos.Contratos;
 using Datos.Entidades;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json.Linq;
+using Seguridad;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace Negocio.Clases
 {
     public class Cliente: ICliente
     {
         ColmenaSegurosContext colmenaSegurosContext;
+        IConfiguration configuration;
 
-        public Cliente(ColmenaSegurosContext colmenaSegurosContext)
+        public Cliente(IConfiguration iconfiguration, ColmenaSegurosContext colmenaSegurosContext)
         {
             this.colmenaSegurosContext = colmenaSegurosContext;
+            this.configuration = iconfiguration;
         }
         public RespuestaGeneral<object> CrearCuenta(PeticionGeneral<ParametrosCrearCuenta> peticionGeneral)
         {
@@ -91,16 +96,17 @@ namespace Negocio.Clases
             RespuestaGeneral<object> respuesta = new RespuestaGeneral<object>();
             try
             {
-                Datos.Entidades.Cliente? nuevoCliente = colmenaSegurosContext.Clientes.Where(
+                Datos.Entidades.Cliente? cliente = colmenaSegurosContext.Clientes.Where(
                     c=>c.Usuario== peticionGeneral.Datos.Usuario 
                     && c.Contraseña== peticionGeneral.Datos.Contraseña
                     ).FirstOrDefault();
-                if (nuevoCliente != null)
+                if (cliente != null)
                 {
                     respuesta.StatusCode = StatusCodes.Status200OK;
                     respuesta.Mensaje = "Operacion exitosa al momento de IniciarSesion";
                     respuesta.Error = false;
-                    respuesta.Resultado = "Token de autenticacion";
+                    AutenticacionJWT autenticacionJWT = new AutenticacionJWT(this.configuration);
+                    respuesta.Resultado = autenticacionJWT.GenerarToken(cliente);
                 }
                 else
                 {
@@ -150,7 +156,35 @@ namespace Negocio.Clases
             return respuesta;
         }
 
+        public RespuestaGeneral<object> ConsultarPoliza()
+        {
+            RespuestaGeneral<object> respuesta = new RespuestaGeneral<object>();
+            respuesta.StatusCode = 200;
+            respuesta.Mensaje = "Operacion exitosa";
+            respuesta.Error = false;
+            respuesta.Resultado = "Operacion exitosa";
+            return respuesta;
+        }
+        public RespuestaGeneral<object> CotizarPoliza()
+        {
+            RespuestaGeneral<object> respuesta = new RespuestaGeneral<object>();
+            respuesta.StatusCode = 200;
+            respuesta.Mensaje = "Operacion exitosa";
+            respuesta.Error = false;
+            respuesta.Resultado = "Operacion exitosa";
+            return respuesta;
+        }
         public RespuestaGeneral<object> MisCotizaciones()
+        {
+            RespuestaGeneral<object> respuesta = new RespuestaGeneral<object>();
+            respuesta.StatusCode = 200;
+            respuesta.Mensaje = "Operacion exitosa";
+            respuesta.Error = false;
+            respuesta.Resultado = "Operacion exitosa";
+            return respuesta;
+        }
+
+        public RespuestaGeneral<object> TomarPoliza()
         {
             RespuestaGeneral<object> respuesta = new RespuestaGeneral<object>();
             respuesta.StatusCode = 200;
@@ -171,6 +205,16 @@ namespace Negocio.Clases
         }
 
         public RespuestaGeneral<object> MisCoberturas()
+        {
+            RespuestaGeneral<object> respuesta = new RespuestaGeneral<object>();
+            respuesta.StatusCode = 200;
+            respuesta.Mensaje = "Operacion exitosa";
+            respuesta.Error = false;
+            respuesta.Resultado = true;
+            return respuesta;
+        }
+
+        public RespuestaGeneral<object> AplicarCobertura()
         {
             RespuestaGeneral<object> respuesta = new RespuestaGeneral<object>();
             respuesta.StatusCode = 200;
