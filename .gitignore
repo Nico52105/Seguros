@@ -11,3 +11,47 @@ Datos/obj
 Seguridad/bin
 Seguridad/obj
 ApiColmenaSeguros/appsettings.Development.json
+
+# See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
+
+# Compiled output
+ApiColmenaSeguros/dist
+ApiColmenaSeguros/tmp
+ApiColmenaSeguros/out-tsc
+ApiColmenaSeguros/bazel-out
+
+# Node
+ApiColmenaSeguros/node_modules
+npm-debug.log
+yarn-error.log
+
+# IDEs and editors
+.idea/
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# Visual Studio Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history/*
+
+# Miscellaneous
+ApiColmenaSeguros/.angular/cache
+.sass-cache/
+ApiColmenaSeguros/connect.lock
+ApiColmenaSeguros/coverage
+ApiColmenaSeguros/libpeerconnection.log
+testem.log
+ApiColmenaSeguros/typings
+
+# System files
+.DS_Store
+Thumbs.db
+AngularColmenaSeguros/.vs
